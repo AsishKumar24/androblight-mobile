@@ -4,7 +4,9 @@ import '../core/theme.dart';
 import '../core/responsive.dart';
 import '../providers/health_provider.dart';
 import '../providers/scan_provider.dart';
+import '../providers/auth_provider.dart';
 import 'home_screen.dart';
+import 'login_screen.dart';
 
 /// Splash Screen - Health check on startup
 
@@ -60,14 +62,17 @@ class _SplashScreenState extends State<SplashScreen>
     // Update scan provider with backend status
     scanProvider.setBackendStatus(isOnline);
 
-    // Navigate to home screen after a brief delay (both online and demo mode)
+    // Navigate based on auth state
     if (mounted) {
       await Future.delayed(const Duration(milliseconds: 500));
       if (mounted) {
+        final authProvider = context.read<AuthProvider>();
+        final isLoggedIn = authProvider.isAuthenticated;
+
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                const HomeScreen(),
+                isLoggedIn ? const HomeScreen() : const LoginScreen(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               return FadeTransition(opacity: animation, child: child);
             },

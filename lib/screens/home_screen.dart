@@ -4,8 +4,10 @@ import '../core/responsive.dart';
 import 'scan_apk_screen.dart';
 import 'scan_playstore_screen.dart';
 import 'history_screen.dart';
+import 'login_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/scan_provider.dart';
+import '../providers/auth_provider.dart';
 
 /// Home Screen - Main navigation hub
 

@@ -4,11 +4,13 @@ import 'package:provider/provider.dart';
 import 'core/theme.dart';
 import 'services/api_service.dart';
 import 'services/storage_service.dart';
+import 'services/auth_service.dart';
 import 'repositories/scan_repository.dart';
 import 'repositories/history_repository.dart';
 import 'providers/health_provider.dart';
 import 'providers/scan_provider.dart';
 import 'providers/history_provider.dart';
+import 'providers/auth_provider.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
@@ -20,6 +22,10 @@ void main() async {
   
   final apiService = ApiService();
   
+  // Initialize auth service (restores saved tokens)
+  final authService = AuthService(apiService);
+  await authService.init();
+  
   // Create repositories
   final scanRepository = ScanRepository(apiService);
   final historyRepository = HistoryRepository(storageService);
@@ -27,6 +33,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(authService)..init(),
+        ),
         ChangeNotifierProvider(
           create: (_) => HealthProvider(scanRepository),
         ),
