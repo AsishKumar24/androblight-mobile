@@ -28,7 +28,7 @@ void main() async {
   
   // Create repositories
   final scanRepository = ScanRepository(apiService);
-  final historyRepository = HistoryRepository(storageService);
+  final historyRepository = HistoryRepository(storageService, apiService);
   
   runApp(
     MultiProvider(
